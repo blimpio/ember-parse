@@ -1,0 +1,21 @@
+<h2 id="title">Ember Parse Adapter 2</h2>
+
+<a href="#" {{action 'createObject'}}>Create Object</a>
+
+<table>
+  {{#each model as |thing|}}
+    <tr>
+      <td>{{thing.id}}</td>
+      <td>{{thing.name}}</td>
+      <td>
+        <a href="#" {{action 'deleteObject' thing}} style="color:red">Delete</a>
+      </td>
+      <td>
+        <a href="#" {{action 'updateObject' thing}}>Update</a>
+      </td>
+    </tr>
+  {{/each}}
+  <tr>
+    <td></td>
+  </tr>
+</table>
