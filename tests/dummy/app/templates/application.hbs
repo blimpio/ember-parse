@@ -1,10 +1,23 @@
 <h2 id="title">Ember Parse</h2>
 
-isAuthenticated: {{isAuthenticated}}<br>
-<a href="#"{{action 'login'}}>Login</a> | <a href="#" {{action 'logout'}}>Logout</a>
+{{#if isAuthenticated}}
+  <a href="#" {{action "logout"}}>Logout</a>
+{{else}}
+  {{#if loginError}}
+    <p>
+      {{loginError}}
+    </p>
+  {{/if}}
+
+  <form {{action "login" on="submit"}}>
+    {{input type="text" value=username placeholder="username"}}<br>
+    {{input type="text" value=password placeholder="password"}}<br>
+    <button type="submit">Login</button>
+  </form>
+{{/if}}
 <br><br><br>
 
-<a href="#" {{action 'createObject'}}>Create Object</a>
+<a href="#" {{action "createObject"}}>Create Object</a>
 
 <table>
   {{#each model as |thing|}}
@@ -12,10 +25,10 @@ isAuthenticated: {{isAuthenticated}}<br>
       <td>{{thing.id}}</td>
       <td>{{thing.name}}</td>
       <td>
-        <a href="#" {{action 'deleteObject' thing}} style="color:red">Delete</a>
+        <a href="#" {{action "deleteObject" thing}} style="color:red">Delete</a>
       </td>
       <td>
-        <a href="#" {{action 'updateObject' thing}}>Update</a>
+        <a href="#" {{action "updateObject" thing}}>Update</a>
       </td>
     </tr>
   {{/each}}

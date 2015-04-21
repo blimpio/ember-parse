@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   isAuthenticated: Ember.computed.alias('session.isAuthenticated'),
+  username: 'user@example.com',
+  password: 'abc123',
+  loginError: null,
 
   actions: {
     createObject() {
@@ -28,19 +31,21 @@ export default Ember.Controller.extend({
     },
 
     login() {
-      this.session.authenticate('user@example.com', 'abc123')
+      this.session.authenticate(this.get('username'), this.get('password'))
         .then((user) => {
-          console.log(user);
+          console.log('Logged in:', user.get('email'));
+          this.set('loginError', null);
         })
         .catch((reason) => {
-          console.error(reason);
+          var err = `Code ${reason.responseJSON.code}: ${reason.responseJSON.error}`;
+          console.error(err);
+          this.set('loginError', err);
         });
     },
 
     logout() {
       this.session.invalidate().then(() => {
-        console.log(this.session.isAuthenticated);
-        console.log(this.session.sessionId);
+        console.log('Logged out');
       });
     }
 
