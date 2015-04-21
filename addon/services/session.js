@@ -102,6 +102,36 @@ export default Ember.Service.extend({
     }
   },
 
+  signup(userData) {
+    var store = this.container.lookup('store:main'),
+        model = store.modelFor('user'),
+        adapter = store.adapterFor(model),
+        serializer = store.serializerFor(model);
+
+    return adapter.ajax(adapter.buildURL(model.typeKey), 'POST', {data: userData})
+      .then(function(response) {
+          serializer.normalize(model, response);
+          response.email = response.email || userData.email;
+          response.username = response.username || userData.username;
+          var record = store.push(model, response);
+          return record;
+        },
+        function(response) {
+          return Ember.RSVP.reject(response.responseJSON);
+        });
+  },
+
+  requestPasswordReset(email) {
+    var store = this.container.lookup('store:main'),
+        adapter = store.adapterFor('application'),
+        data = {email: email};
+
+    return adapter.ajax(adapter.buildURL('requestPasswordReset'),'POST', {data:data})
+      .catch(function(response) {
+        return Ember.RSVP.reject(response.responseJSON);
+      });
+  },
+
   sessionStore: {
     save(key, data) {
       return new Ember.RSVP.Promise(function(resolve) {

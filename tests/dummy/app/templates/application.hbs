@@ -2,6 +2,11 @@
 
 {{#if isAuthenticated}}
   <a href="#" {{action "logout"}}>Logout</a>
+  <br><br><br>
+  <form {{action "resetPassword" on="submit"}}>
+    {{input type="text" value=username placeholder="email"}}
+    <button type="submit">Reset password</button>
+  </form>
 {{else}}
   {{#if loginError}}
     <p>
@@ -14,7 +19,9 @@
     {{input type="text" value=password placeholder="password"}}<br>
     <button type="submit">Login</button>
   </form>
+  <button {{action "signup"}}>Sign up</button>
 {{/if}}
+
 <br><br><br>
 
 <a href="#" {{action "createObject"}}>Create Object</a>

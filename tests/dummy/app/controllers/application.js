@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
         age: 2,
 
         ParseACL: {
-          // owner: this.get('session.content.secure.userId')
+          owner: this.get('session.userId')
         }
       });
 
@@ -35,6 +35,7 @@ export default Ember.Controller.extend({
         .then((user) => {
           console.log('Logged in:', user.get('email'));
           this.set('loginError', null);
+          this.send('reloadModel');
         })
         .catch((reason) => {
           var err = `Code ${reason.responseJSON.code}: ${reason.responseJSON.error}`;
@@ -46,7 +47,26 @@ export default Ember.Controller.extend({
     logout() {
       this.session.invalidate().then(() => {
         console.log('Logged out');
+        this.send('reloadModel');
       });
+    },
+
+    signup() {
+      this.session.signup({
+        username: this.get('username'),
+        password: this.get('password'),
+        email: this.get('username')
+      }).then((user) => {
+        console.log(user);
+        this.send('login');
+      });
+    },
+
+    resetPassword() {
+      this.session.requestPasswordReset(this.get('username'))
+        .then(function(response) {
+          console.log(response);
+       });
     }
 
   }
