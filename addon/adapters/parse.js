@@ -12,6 +12,9 @@ var get = Ember.get,
 
 
 export default DS.RESTAdapter.extend({
+  PARSE_APPLICATION_ID: null,
+  PARSE_JAVASCRIPT_KEY: null,
+
   host: 'https://api.parse.com',
   namespace: '1',
   classesPath: 'classes',

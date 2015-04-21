@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  isAuthenticated: Ember.computed.alias('session.isAuthenticated'),
+
   actions: {
     createObject() {
       var thing = this.store.createRecord('thing', {
@@ -23,6 +25,20 @@ export default Ember.Controller.extend({
     updateObject(object) {
       object.set('name', 'Updated');
       object.save();
+    },
+
+    login() {
+      this.session.authenticate('user@example.com', 'abc123').then(() => {
+        console.log(this.session.isAuthenticated);
+        console.log(this.session.sessionId);
+      });
+    },
+
+    logout() {
+      this.session.invalidate().then(() => {
+        console.log(this.session.isAuthenticated);
+        console.log(this.session.sessionId);
+      });
     }
 
   }

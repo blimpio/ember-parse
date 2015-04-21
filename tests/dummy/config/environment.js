@@ -16,9 +16,12 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      PARSE_APPLICATION_ID: 'CIYQmnUpXGDKJiGsySpST80UT0Q6CkPaTdBJlD5T',
-      PARSE_JAVASCRIPT_KEY: 'hMcPUKC7NDDGtUQyGMqmgnU0IVK3R65NlADbWcMJ'
     }
+  };
+
+  ENV.emberParse = {
+    PARSE_APPLICATION_ID: 'CIYQmnUpXGDKJiGsySpST80UT0Q6CkPaTdBJlD5T',
+    PARSE_JAVASCRIPT_KEY: 'hMcPUKC7NDDGtUQyGMqmgnU0IVK3R65NlADbWcMJ'
   };
 
   ENV.contentSecurityPolicy = {

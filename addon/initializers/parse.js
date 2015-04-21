@@ -1,18 +1,19 @@
-import Adapter from '../adapters/application';
-import Authorizer from '../authorizers/parse';
-import Authenticator from '../authenticators/parse';
+import ParseAdapter from 'ember-parse/adapters/parse';
+import ParseSerializer from 'ember-parse/serializers/parse';
+import Session from 'ember-parse/services/session';
 
 export function initialize(container, application) {
-  Adapter.reopen({
-    PARSE_APPLICATION_ID: application.get('PARSE_APPLICATION_ID'),
-    PARSE_JAVASCRIPT_KEY: application.get('PARSE_JAVASCRIPT_KEY')
-  });
+  application.register('adapter:-parse', ParseAdapter);
+  application.register('serializer:-parse', ParseSerializer);
 
-  container.register('authorizers:parse', Authorizer);
-  container.register('authenticators:parse', Authenticator);
+
+  container.register('service:session', Session);
+  container.injection('route', 'session', 'service:session');
+  container.injection('controller', 'session', 'service:session');
 }
 
 export default {
-  name: 'parse',
-  initialize: initialize
+  name: 'parse-session',
+  initialize: initialize,
+  after: 'store'
 };
