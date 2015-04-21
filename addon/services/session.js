@@ -84,7 +84,7 @@ export default Ember.Service.extend({
           store = this.container.lookup('store:main'),
           adapter = store.adapterFor('application');
 
-      // Manually remove user from store
+      // Remove user from store
       store.find('user', this.get('userId')).then((user) => {
         user.unloadRecord();
       });
