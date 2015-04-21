@@ -1,4 +1,4 @@
-import Adapter from 'ember-parse-adapter-2/adapters/parse';
+import Adapter from 'ember-parse/adapters/parse';
 // import Authorizer from 'ember-parse-adapter-2/authorizers/parse';
 // import Authenticator from 'ember-parse-adapter-2/authenticators/parse';
 

@@ -1,3 +1,3 @@
-import ParseSerializer from 'ember-parse-adapter-2/serializers/parse';
+import ParseSerializer from 'ember-parse/serializers/parse';
 
 export default ParseSerializer;

@@ -1,3 +1,3 @@
-import ParseAdapter from 'ember-parse-adapter-2/adapters/parse';
+import ParseAdapter from 'ember-parse/adapters/parse';
 
 export default ParseAdapter;
