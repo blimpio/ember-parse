@@ -32,10 +32,10 @@ export default Ember.Service.extend({
   sessionToken: null,
   sessionStoreKey: 'ember-parse:session',
   isAuthenticated: Ember.computed('userId', 'sessionToken', function() {
-    if (Ember.isEmpty(this.get('userId')) || Ember.isEmpty(this.get('sessionToken'))) {
-      return false;
-    } else {
+    if (this.get('userId') || this.get('sessionToken')) {
       return true;
+    } else {
+      return false;
     }
   }),
 
@@ -73,8 +73,7 @@ export default Ember.Service.extend({
           return record;
 
         }, (reason) => {
-          var err = `Code ${reason.responseJSON.code}: ${reason.responseJSON.error}`;
-          return Ember.RSVP.reject(new Error(err));
+          return Ember.RSVP.reject(reason);
         });
   },
 
