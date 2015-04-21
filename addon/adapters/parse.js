@@ -23,7 +23,6 @@ export default DS.RESTAdapter.extend({
   init() {
     this._super();
 
-    this.set('parseClientVersion', this.parseVersion);
     this.set('applicationId', this.get('PARSE_APPLICATION_ID'));
     this.set('javascriptKey', this.get('PARSE_JAVASCRIPT_KEY'));
     this.set('installationId', this._getInstallationId());
@@ -66,7 +65,7 @@ export default DS.RESTAdapter.extend({
       hash.contentType = 'application/json; charset=utf-8';
 
       // Parse auth stuff
-      hash.data._ClientVersion = this.get('clientVersion');
+      hash.data._ClientVersion = this.get('parseClientVersion');
       hash.data._ApplicationId = this.get('applicationId');
       hash.data._JavaScriptKey = this.get('javascriptKey');
       hash.data._InstallationId = this.get('installationId');
