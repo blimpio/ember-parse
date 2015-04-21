@@ -28,10 +28,13 @@ export default Ember.Controller.extend({
     },
 
     login() {
-      this.session.authenticate('user@example.com', 'abc123').then(() => {
-        console.log(this.session.isAuthenticated);
-        console.log(this.session.sessionId);
-      });
+      this.session.authenticate('user@example.com', 'abc123')
+        .then((user) => {
+          console.log(user);
+        })
+        .catch((reason) => {
+          console.error(reason);
+        });
     },
 
     logout() {

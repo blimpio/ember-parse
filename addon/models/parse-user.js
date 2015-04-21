@@ -8,10 +8,7 @@ var User = DS.Model.extend({
   emailVerified: DS.attr('boolean'),
   sessionToken: DS.attr('string'),
   createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date'),
-
-  firstName: DS.attr('string'),
-  lastName: DS.attr('string')
+  updatedAt: DS.attr('date')
 });
 
 
