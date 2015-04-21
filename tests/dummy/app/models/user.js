@@ -1,3 +1,3 @@
-import User from 'ember-parse/models/parse-user';
+import ParseUser from 'ember-parse/models/parse-user';
 
-export default User;
+export default ParseUser;

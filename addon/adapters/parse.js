@@ -93,7 +93,7 @@ export default DS.RESTAdapter.extend({
   ajaxError: function(jqXHR, responseText, errorThrown) {
     if (jqXHR.responseJSON.error === 'invalid session token') {
       // If user is not authenticated invalidate session
-      this.container.lookup('simple-auth-session:main').invalidate();
+      this.container.lookup('service:session').invalidate();
     }
 
     return this._super(jqXHR, responseText, errorThrown);
@@ -217,6 +217,11 @@ export default DS.RESTAdapter.extend({
     return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
   },
 
+  find(store, type, id, snapshot) {
+    var data = {_method: 'GET'};
+    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
+  },
+
   findAll(store, type, sinceToken) {
     var query = {};
 
@@ -229,6 +234,14 @@ export default DS.RESTAdapter.extend({
 
     return this.ajax(this.buildURL(type.typeKey), 'POST', {data: query});
   },
+
+  // findBelongsTo: function(store, snapshot, url, relationship) {
+  //   debugger;
+  //   var id   = snapshot.id;
+  //   var type = snapshot.typeKey;
+
+  //   return this.ajax(this.urlPrefix(url, this.buildURL(type, id)), 'GET');
+  // },
 
   /**
   * Implementation of a hasMany that provides a Relation query for Parse

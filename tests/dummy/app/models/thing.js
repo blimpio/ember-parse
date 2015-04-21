@@ -3,5 +3,6 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   name: DS.attr('string'),
   age: DS.attr('number'),
-  createdAt: DS.attr('date')
+  createdAt: DS.attr('date'),
+  category: DS.belongsTo('category', {async: true})
 });
