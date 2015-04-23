@@ -61,6 +61,11 @@ export default DS.RESTSerializer.extend({
     this._super(type, hash);
   },
 
+  /*
+   * Here we set the links property to a serialized version
+   * of key and className. This info will be passed to adapter.findHasMany
+   * where we can deserialize to create the needed Parse query.
+   */
   normalizeRelationships: function(type, hash) {
     if (this.keyForRelationship) {
       type.eachRelationship(function(key, relationship) {
@@ -70,75 +75,14 @@ export default DS.RESTSerializer.extend({
 
         if (hash[key] && 'hasMany' === relationship.kind) {
           hash.links = {};
-          hash.links[key] = `${key}::${hash[key].className}`;
+          hash.links[key] = JSON.stringify({key: key, className: hash[key].className});
           delete hash[key].__type;
           delete hash[key].className;
           hash[key] = [];
-          // debugger;
         }
       }, this);
     }
   },
-
-  /**
-  * Special handling of the Parse relation types. In certain
-  * conditions there is a secondary query to retrieve the "many"
-  * side of the "hasMany".
-  */
-  // normalizeRelationships(type, hash) {
-  //   var store = this.get('store'),
-  //       serializer = this;
-
-  //   type.eachRelationship(function(key, relationship) {
-
-  //     var options = relationship.options;
-
-  //     // Handle the belongsTo relationships
-  //     if (hash[key] && 'belongsTo' === relationship.kind) {
-  //       hash[key] = hash[key].objectId;
-  //     }
-
-  //     // Handle the hasMany relationships
-  //     if (hash[key] && 'hasMany' === relationship.kind) {
-
-  //       // If this is a Relation hasMany then we need to supply
-  //       // the links property so the adapter can async call the
-  //       // relationship.
-  //       // The adapter findHasMany has been overridden to make use of this.
-  //       if (options.relation) {
-  //         hash.links = {};
-  //         hash.links[key] = {type: relationship.type, key: key};
-  //       }
-
-  //       if (options.array) {
-  //         // Parse will return [null] for empty relationships
-  //         if (hash[key].length && hash[key]) {
-  //           hash[key].forEach(function(item, index, items) {
-  //             // When items are pointers we just need the id
-  //             // This occurs when request was made without the include query param.
-  //             if ('Pointer' === item.__type) {
-  //               items[index] = item.objectId;
-
-  //             } else {
-  //               // When items are objects we need to clean them and add them to the store.
-  //               // This occurs when request was made with the include query param.
-  //               delete item.__type;
-  //               delete item.className;
-  //               item.id = item.objectId;
-  //               delete item.objectId;
-  //               item.type = relationship.type;
-  //               serializer.normalizeAttributes(relationship.type, item);
-  //               serializer.normalizeRelationships(relationship.type, item);
-  //               store.push(relationship.type, item);
-  //             }
-  //           });
-  //         }
-  //       }
-  //     }
-  //   }, this);
-
-  //   this._super(type, hash);
-  // },
 
   serializeIntoHash(hash, type, record, options) {
     Ember.merge(hash, this.serialize(record, options));
