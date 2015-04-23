@@ -240,23 +240,26 @@ export default DS.RESTAdapter.extend({
   * objects.
   */
   findHasMany(store, record, relatedInfo) {
+    var related = relatedInfo.split('::');
+
     var query = {
       where: {
-        '$realtedTo': {
+        '$relatedTo': {
           'object': {
             '__type': 'Pointer',
             'className': this.parseClassName(record.typeKey),
-            'objectId': this.record.id
+            'objectId': record.id
           },
-          key: relatedInfo.key
+          key: related[0]
         }
-      }
+      },
+      _method: 'GET'
     };
 
     // the request is to the related type and not the type for the record.
     // the query is where there is a pointer to this record.
     return this.ajax(
-              this.buildURL(relatedInfo.type.typeKey), 'GET', {data: query});
+              this.buildURL(related[1]), 'POST', {data: query});
   },
 
   /**
