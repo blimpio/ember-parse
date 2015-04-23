@@ -75,7 +75,11 @@ export default DS.RESTSerializer.extend({
 
         if (hash[key] && 'hasMany' === relationship.kind) {
           hash.links = {};
-          hash.links[key] = JSON.stringify({key: key, className: hash[key].className});
+          hash.links[key] = JSON.stringify({
+            key: key,
+            className: hash[key].className
+          });
+
           delete hash[key].__type;
           delete hash[key].className;
           hash[key] = [];
