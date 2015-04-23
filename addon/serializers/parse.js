@@ -61,11 +61,6 @@ export default DS.RESTSerializer.extend({
     this._super(type, hash);
   },
 
-  /*
-   * Here we set the links property to a serialized version
-   * of key and className. This info will be passed to adapter.findHasMany
-   * where we can deserialize to create the needed Parse query.
-   */
   normalizeRelationships: function(type, hash) {
     if (this.keyForRelationship) {
       type.eachRelationship(function(key, relationship) {
@@ -73,6 +68,11 @@ export default DS.RESTSerializer.extend({
           hash[key] = hash[key].objectId;
         }
 
+        /*
+         * Here we set the links property to a serialized version
+         * of key and className. This info will be passed to adapter.findHasMany
+         * where we can deserialize to create the needed Parse query.
+         */
         if (hash[key] && 'hasMany' === relationship.kind) {
           hash.links = {};
           hash.links[key] = JSON.stringify({
