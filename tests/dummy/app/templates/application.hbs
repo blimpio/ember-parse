@@ -33,6 +33,11 @@
       <td>{{thing.name}}</td>
       <td>{{thing.category.name}}</td>
       <td>
+        {{#each thing.friends as |friend|}}
+          <p>{{friend.name}}</p>
+        {{/each}}
+      </td>
+      <td>
         <a href="#" {{action "deleteObject" thing}} style="color:red">Delete</a>
       </td>
       <td>
