@@ -69,6 +69,7 @@ export default DS.RESTSerializer.extend({
         }
 
         /*
+         * TODO: Find a better way to do this
          * Here we set the links property to a serialized version
          * of key and className. This info will be passed to adapter.findHasMany
          * where we can deserialize to create the needed Parse query.
