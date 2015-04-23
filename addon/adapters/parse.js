@@ -235,14 +235,6 @@ export default DS.RESTAdapter.extend({
     return this.ajax(this.buildURL(type.typeKey), 'POST', {data: query});
   },
 
-  // findBelongsTo: function(store, snapshot, url, relationship) {
-  //   debugger;
-  //   var id   = snapshot.id;
-  //   var type = snapshot.typeKey;
-
-  //   return this.ajax(this.urlPrefix(url, this.buildURL(type, id)), 'GET');
-  // },
-
   /**
   * Implementation of a hasMany that provides a Relation query for Parse
   * objects.
