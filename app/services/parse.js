@@ -1,3 +1,3 @@
-import Session from 'ember-parse/services/session';
+import ParseSession from 'ember-parse/services/session';
 
-export default Session;
+export default ParseSession;
