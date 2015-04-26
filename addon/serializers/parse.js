@@ -189,6 +189,7 @@ export default DS.RESTSerializer.extend({
             objectsBeforeUpdate = snapshot.record._relationships[key].canonicalMembers,
             operation = 'AddRelation';
 
+        // Check if this is removing the last relation for a key
         if (objectsForKey.length === 0 && objectsBeforeUpdate.size === 1) {
           // Removing the last relation
           operation = 'RemoveRelation';
