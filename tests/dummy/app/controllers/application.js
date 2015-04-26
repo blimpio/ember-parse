@@ -89,7 +89,7 @@ export default Ember.Controller.extend({
         .then((user) => {
           console.log('Logged in:', user.get('email'));
           this.set('loginError', null);
-          this.send('reloadModel');
+          this.send('reloadData');
         })
         .catch((reason) => {
           var err = `Code ${reason.responseJSON.code}: ${reason.responseJSON.error}`;
@@ -101,7 +101,7 @@ export default Ember.Controller.extend({
     logout() {
       this.get('session').invalidate().then(() => {
         console.log('Logged out');
-        this.send('reloadModel');
+        this.send('reloadData');
       });
     },
 
