@@ -161,8 +161,8 @@ export default DS.RESTAdapter.extend({
   },
 
   deleteRecord: function(store, type, snapshot) {
-    var id = snapshot.id,
-        data = {_method: 'DELETE'};
+    var data = {_method: 'DELETE'},
+        id = snapshot.id;
 
     return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
   },
