@@ -137,10 +137,10 @@ export default DS.RESTSerializer.extend({
 
     // Add ACL
     if (ParseACL) {
-      var policy = {}
+      var policy = {};
 
       if (ParseACL.owner) {
-        policy[ParseACL.owner] = {}
+        policy[ParseACL.owner] = {};
       }
 
       if (ParseACL.permissions) {
@@ -149,7 +149,7 @@ export default DS.RESTSerializer.extend({
         policy[ParseACL.owner] = {
           read: true,
           write: true
-        }
+        };
       }
       hash.ACL = policy;
     }
