@@ -79,6 +79,11 @@ export default Ember.Controller.extend({
       object.save();
     },
 
+    updateCar(car) {
+      car.set('name', car.get('name') + '*');
+      car.save();
+    },
+
     login() {
       this.get('session').authenticate(this.get('username'), this.get('password'))
         .then((user) => {

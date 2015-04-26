@@ -47,7 +47,7 @@
       </td>
       <td>
         {{#each thing.cars as |car|}}
-          {{car.name}}<br>
+          {{car.name}} <a href="#" {{action 'updateCar' car}}>*</a><br>
         {{/each}}
       </td>
       <td>
