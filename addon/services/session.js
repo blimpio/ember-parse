@@ -1,7 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+  userId: null,
+  sessionToken: null,
+  sessionStoreKey: 'ember-parse:session',
+
   init() {
+    Ember.Logger.debug('DEBUG: Parse session service: init()');
+
     var key = this.get('sessionStoreKey'),
         store = this.container.lookup('store:main'),
         model = store.modelFor('user'),
@@ -28,9 +34,6 @@ export default Ember.Service.extend({
     });
   },
 
-  userId: null,
-  sessionToken: null,
-  sessionStoreKey: 'ember-parse:session',
   isAuthenticated: Ember.computed('userId', 'sessionToken', function() {
     if (this.get('userId') || this.get('sessionToken')) {
       return true;
@@ -47,9 +50,9 @@ export default Ember.Service.extend({
         serializer = store.serializerFor(model);
 
       var data = {
+        _method: 'GET',
         username: username,
-        password: password,
-        _method: 'GET'
+        password: password
       };
 
       return adapter.ajax(adapter.buildURL('login'), 'POST', {data: data})
@@ -124,7 +127,10 @@ export default Ember.Service.extend({
   requestPasswordReset(email) {
     var store = this.container.lookup('store:main'),
         adapter = store.adapterFor('application'),
-        data = {email: email};
+        data = {
+          _method: 'POST',
+          email: email
+        };
 
     return adapter.ajax(adapter.buildURL('requestPasswordReset'),'POST', {data:data})
       .catch(function(response) {

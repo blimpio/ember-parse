@@ -1,13 +1,14 @@
-import ParseAdapter from 'ember-parse/adapters/parse';
-import ParseSerializer from 'ember-parse/serializers/parse';
+import ParseSession from '../services/session';
 
-export function initialize(container, application) {
-  application.register('adapter:-parse', ParseAdapter);
-  application.register('serializer:-parse', ParseSerializer);
+export function initialize(container) {
+  container.register('service:session', ParseSession);
+  container.injection('route', 'session', 'service:session');
+  container.injection('controller', 'session', 'service:session');
+  container.injection('component', 'session', 'service:session');
 }
 
 export default {
-  name: 'parse-session',
-  initialize: initialize,
-  after: 'store'
+  before: 'store',
+  name: 'parse',
+  initialize: initialize
 };
