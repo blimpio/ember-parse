@@ -184,21 +184,53 @@ export default DS.RESTSerializer.extend({
       var relationshipType = snapshot.type.determineRelationshipType(relationship);
 
       if (relationshipType === 'manyToNone' || relationshipType === 'manyToMany') {
-        var objects = [];
-        snapshot.hasMany(key).forEach((item) => {
-          objects.push({
-            __type: 'Pointer',
-            className: this.parseClassName(item.typeKey),
-            objectId: item.id
-          });
+        var objects = [],
+            objectsForKey = snapshot.hasMany(key),
+            objectsBeforeUpdate = snapshot.record._relationships[key].canonicalMembers,
+            operation = 'AddRelation';
+
+        // Determine if we are adding or removing a relationship
+        objectsForKey.forEach((item) => {
+          if (objectsForKey.length < objectsBeforeUpdate.size) {
+            // Remove existing relation
+            //
+            // Parse needs an array of the objects we want
+            // to remove so we have to invert the object list
+            // to contain items to remove
+            operation = 'RemoveRelation';
+
+            var objectsToKeepIds = objectsForKey.map(function(obj) {
+              return obj.id;
+            });
+
+            objectsBeforeUpdate.list.forEach((obj) => {
+              if (objectsToKeepIds.indexOf(obj.id) < 0) {
+                objects.push({
+                  __type: 'Pointer',
+                  className: this.parseClassName(item.typeKey),
+                  objectId: obj.id
+                });
+              }
+            });
+
+          } else {
+            // Add a new relation
+            // (objectsForKey.length > objectsBeforeUpdate.size)
+            objects.push({
+              __type: 'Pointer',
+              className: this.parseClassName(item.typeKey),
+              objectId: item.id
+            });
+          }
+
+
         });
 
         json[payloadKey] = {
-          __op: 'AddRelation',
+          __op: operation,
           objects: objects,
-          className: snapshot.type.typeKey
+          className: this.parseClassName(snapshot.type.typeKey)
         };
-
         // TODO support for polymorphic manyToNone and manyToMany relationships
       }
     }

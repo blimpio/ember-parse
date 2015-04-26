@@ -151,12 +151,15 @@ export default DS.RESTAdapter.extend({
   },
 
   updateRecord: function(store, type, snapshot) {
-    var data = {_method: 'PUT'};
-    var serializer = store.serializerFor(type.typeKey);
+    var data = {_method: 'PUT'},
+        id = snapshot.id,
+        serializer = store.serializerFor(type.typeKey);
 
     serializer.serializeIntoHash(data, type, snapshot);
 
-    var id = snapshot.id;
+    // debugger;
+    // snapshot.record._relationships.friends.members
+    // snapshot.record._relationships.friends.canonicalMembers
     return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
   },
 
