@@ -189,6 +189,17 @@ export default DS.RESTSerializer.extend({
             objectsBeforeUpdate = snapshot.record._relationships[key].canonicalMembers,
             operation = 'AddRelation';
 
+        if (objectsForKey.length === 0 && objectsBeforeUpdate.size === 1) {
+          // Removing the last relation
+          operation = 'RemoveRelation';
+
+          objects.push({
+            __type: 'Pointer',
+            className: this.parseClassName(snapshot.type.typeForRelationship(key).typeKey),
+            objectId: objectsBeforeUpdate.list[0].id
+          });
+        }
+
         // Determine if we are adding or removing a relationship
         objectsForKey.forEach((item) => {
           if (objectsForKey.length < objectsBeforeUpdate.size) {
@@ -222,7 +233,6 @@ export default DS.RESTSerializer.extend({
               objectId: item.id
             });
           }
-
 
         });
 
