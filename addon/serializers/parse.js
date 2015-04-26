@@ -133,6 +133,27 @@ export default DS.RESTSerializer.extend({
   },
 
   serializeIntoHash: function(hash, type, snapshot, options) {
+    var ParseACL = snapshot.record.get('ParseACL');
+
+    // Add ACL
+    if (ParseACL) {
+      var policy = {}
+
+      if (ParseACL.owner) {
+        policy[ParseACL.owner] = {}
+      }
+
+      if (ParseACL.permissions) {
+        policy[ParseACL.owner] = ParseACL.permissions;
+      } else {
+        policy[ParseACL.owner] = {
+          read: true,
+          write: true
+        }
+      }
+      hash.ACL = policy;
+    }
+
     Ember.merge(hash, this.serialize(snapshot, options));
   },
 

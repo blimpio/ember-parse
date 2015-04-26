@@ -132,27 +132,7 @@ export default DS.RESTAdapter.extend({
   createRecord(store, type, record) {
     var serializer = store.serializerFor(type.typeKey),
       data = {_method: 'POST'},
-      adapter = this,
-      ParseACL = record.record.ParseACL;
-
-    if (ParseACL) {
-      var policy = {}
-
-      if (ParseACL.owner) {
-        policy[ParseACL.owner] = {}
-      }
-
-      if (ParseACL.permissions) {
-        policy[ParseACL.owner] = ParseACL.permissions;
-      } else {
-        policy[ParseACL.owner] = {
-          read: true,
-          write: true
-        }
-      }
-
-      data.ACL = policy;
-    }
+      adapter = this;
 
     serializer.serializeIntoHash(data, type, record, {includeId: true});
 
