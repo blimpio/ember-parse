@@ -36,7 +36,7 @@ This is still a work in progress.
 ## Installation
 
 * `ember install:addon ember-parse`
-* `ember generate ember-parse`
+* `ember generate ember-parse` :point_left: not implemented
 
 
 ## Development
