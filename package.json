@@ -1,7 +1,7 @@
 {
   "name": "ember-parse",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1-alpha",
+  "description": "All you need to use Parse. Includes an adapter, serializer and a session service to do auth.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,7 +11,7 @@
     "build": "ember build",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/getblimp/ember-parse",
   "engines": {
     "node": ">= 0.10.0"
   },
