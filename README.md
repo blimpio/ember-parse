@@ -60,3 +60,6 @@ This is still a work in progress.
 * `ember build`
 
 For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+
+## Credits
+This addon builds upon the work of [clintjhill](https://github.com/clintjhill) on [ember-parse-adapter](https://github.com/clintjhill/ember-parse-adapter). Thanks!
