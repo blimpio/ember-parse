@@ -32,6 +32,8 @@ This is still a work in progress.
 - [ ] AuthenticatedRouteMixin
 - [ ] Blueprint to generate application files
 
+## Getting Started
+Since this is still a work in progress, we don't have any documentation. In the meantime you can take a look at the [dummy app](https://github.com/GetBlimp/ember-parse/tree/master/tests/dummy) to get an idea of how the addon works.
 
 ## Installation
 
