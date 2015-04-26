@@ -160,54 +160,14 @@ export default DS.RESTAdapter.extend({
     return promise;
   },
 
-  /**
-  * Because Parse doesn't return a full set of properties on the
-  * responses to updates, we want to perform a merge of the response
-  * properties onto existing data so that the record maintains
-  * latest data.
-  */
-  updateRecord(store, type, record) {
-    var serializer = store.serializerFor(type.typeKey),
-      id = record.id,
-      sendDeletes = false,
-      deleteds = {},
-      data = {},
-      adapter = this;
+  updateRecord: function(store, type, snapshot) {
+    var data = {_method: 'PUT'};
+    var serializer = store.serializerFor(type.typeKey);
 
-    serializer.serializeIntoHash(data, type, record);
+    serializer.serializeIntoHash(data, type, snapshot);
 
-    type.eachRelationship(function(key) {
-      if (data[key] && data[key].deleteds) {
-        deleteds[key] = data[key].deleteds;
-        delete data[key].deleteds;
-        sendDeletes = true;
-      }
-    });
-
-    var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-      if (sendDeletes) {
-        adapter.ajax(adapter.buildURL(type.typeKey, id), 'PUT', {data: deleteds})
-          .then(function() {
-            adapter.ajax(adapter.buildURL(type.typeKey, id), 'PUT', {data: data})
-              .then(function(updates) {
-                // This is the essential bit - merge response data onto existing data.
-                resolve(Ember.merge(data, updates));
-              }, function(reason) {
-                reject('Failed to save parent in relation: ' + reason.response.JSON);
-              });
-          });
-      } else {
-        adapter.ajax(adapter.buildURL(type.typeKey, id), 'PUT', {data: data})
-          .then(function(json) {
-            // This is the essential bit - merge response data onto existing data.
-            resolve( Ember.merge(data, json));
-          }, function(reason) {
-            reject(reason.responseJSON);
-          });
-      }
-    });
-
-    return promise;
+    var id = snapshot.id;
+    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
   },
 
   deleteRecord: function(store, type, snapshot) {
@@ -223,16 +183,16 @@ export default DS.RESTAdapter.extend({
   },
 
   findAll(store, type, sinceToken) {
-    var query = {};
+    var data = {_method: 'GET'};
 
     if (sinceToken) {
-      query.since = sinceToken;
+      data.since = sinceToken;
     }
 
-    query.where = {};
-    query._method = 'GET';
+    data.where = {};
+    data._method = 'GET';
 
-    return this.ajax(this.buildURL(type.typeKey), 'POST', {data: query});
+    return this.ajax(this.buildURL(type.typeKey), 'POST', {data: data});
   },
 
   /**

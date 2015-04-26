@@ -140,61 +140,39 @@ export default DS.RESTSerializer.extend({
     }
   },
 
-  serializeHasMany(record, json, relationship) {
-    var key = relationship.key,
-        hasMany = record.get( key ),
-        options = relationship.options;
+  serializeHasMany(snapshot, json, relationship) {
+    var key = relationship.key;
 
-    if (hasMany && hasMany.get('length') > 0) {
+    if (this._canSerialize(key)) {
+      var payloadKey;
       json[key] = {'objects': []};
 
-      if (options.relation) {
-        json[key].__op = 'AddRelation';
+      // if provided, use the mapping provided by `attrs` in
+      // the serializer
+      payloadKey = this._getMappedKey(key);
+      if (payloadKey === key && this.keyForRelationship) {
+        payloadKey = this.keyForRelationship(key, "hasMany");
       }
 
-      if (options.array) {
-        json[key].__op = 'AddUnique';
-      }
+      var relationshipType = snapshot.type.determineRelationshipType(relationship);
 
-      hasMany.forEach(function(child) {
-        json[key].objects.push({
-          '__type': 'Pointer',
-          'className': child.parseClassName(),
-          'objectId': child.get('id')
+      if (relationshipType === 'manyToNone' || relationshipType === 'manyToMany') {
+        var objects = [];
+        snapshot.hasMany(key).forEach((item) => {
+          objects.push({
+            __type: 'Pointer',
+            className: this.parseClassName(item.typeKey),
+            objectId: item.id
+          });
         });
-      });
 
-      if (hasMany._deletedItems && hasMany._deletedItems.length) {
-        if (options.relation) {
-          var addOperation = json[key],
-              deleteOperation = {'__op': 'RemoveRelation', 'objects': []};
-
-          hasMany._deletedItems.forEach(function(item) {
-            deleteOperation.objects.push({
-              '__type': 'Pointer',
-              'className': item.type,
-              'objectId': item.id
-            });
-          });
-
-          json[key] = {'__op': 'Batch', 'ops': [addOperation, deleteOperation]};
-        }
-
-        if (options.array) {
-          json[key].deleteds = {'__op': 'Remove', 'objects': []};
-
-          hasMany._deletedItems.forEach(function(item) {
-            json[key].deleteds.objects.push({
-              '__type': 'Pointer',
-              'className': item.type,
-              'objectId': item.id
-            });
-          });
-        }
+        json[payloadKey] = {
+          __op: 'AddRelation',
+          objects: objects,
+          className: snapshot.type.typeKey
+        };
       }
 
-    } else {
-      json[key] = [];
     }
   }
 
