@@ -128,7 +128,12 @@ export default DS.RESTSerializer.extend({
         'className': this.parseClassName(belongsTo.type.typeKey),
         'objectId': belongsTo.id
       };
+
     }
+  },
+
+  serializeIntoHash: function(hash, type, snapshot, options) {
+    Ember.merge(hash, this.serialize(snapshot, options));
   },
 
   parseClassName(key) {
