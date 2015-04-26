@@ -5,5 +5,6 @@ export default DS.Model.extend({
   age: DS.attr('number'),
   createdAt: DS.attr('date'),
   category: DS.belongsTo('category', {async: true}),
-  friends: DS.hasMany('friend', {async:true})
+  friends: DS.hasMany('friend', {async: true}),
+  cars: DS.hasMany('car', {async: true})
 });

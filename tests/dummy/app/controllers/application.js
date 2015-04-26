@@ -8,15 +8,57 @@ export default Ember.Controller.extend({
 
   actions: {
     createObject() {
-      var thing = this.store.createRecord('thing', {
-        name: 'New',
-        age: 2,
-
-        ParseACL: {
-          owner: this.get('session.userId')
-        }
+      var friend1 = this.store.createRecord('friend', {
+        name: 'Juanito'
       });
 
+      var friend2 = this.store.createRecord('friend', {
+        name: 'Paco'
+      });
+
+      var car1 = this.store.createRecord('car', {
+        name: 'Toyota'
+      });
+
+      var car2 = this.store.createRecord('car', {
+        name: 'Honda'
+      });
+
+      var cat = this.store.createRecord('category', {
+        name: 'Category'
+      });
+
+      var thingObj = {
+        name: 'New',
+        age: 2
+      };
+
+      if (this.get('session.userId')) {
+        thingObj.ParseACL = {
+          owner: this.get('session.userId')
+        };
+      }
+
+      var thing = this.store.createRecord('thing', thingObj);
+
+      friend1.save().then(()=> {
+        friend2.save().then(()=> {
+          car1.save().then(()=> {
+            car2.save().then(()=> {
+              cat.save().then(()=> {
+                thing.get('friends').pushObjects([friend1, friend2]);
+                thing.get('cars').pushObjects([car1]);
+                thing.set('category', cat);
+                thing.save();
+              });
+            });
+          });
+        });
+      });
+    },
+
+    removeFriend(thing, friend) {
+      thing.get('friends').removeObject(friend);
       thing.save();
     },
 
@@ -31,7 +73,7 @@ export default Ember.Controller.extend({
     },
 
     login() {
-      this.session.authenticate(this.get('username'), this.get('password'))
+      this.get('session').authenticate(this.get('username'), this.get('password'))
         .then((user) => {
           console.log('Logged in:', user.get('email'));
           this.set('loginError', null);
@@ -45,14 +87,14 @@ export default Ember.Controller.extend({
     },
 
     logout() {
-      this.session.invalidate().then(() => {
+      this.get('session').invalidate().then(() => {
         console.log('Logged out');
         this.send('reloadModel');
       });
     },
 
     signup() {
-      this.session.signup({
+      this.get('session').signup({
         username: this.get('username'),
         password: this.get('password'),
         email: this.get('username')
@@ -63,7 +105,7 @@ export default Ember.Controller.extend({
     },
 
     resetPassword() {
-      this.session.requestPasswordReset(this.get('username'))
+      this.get('session').requestPasswordReset(this.get('username'))
         .then(function(response) {
           console.log(response);
        });

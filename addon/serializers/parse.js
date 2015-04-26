@@ -76,11 +76,15 @@ export default DS.RESTSerializer.extend({
          * the needed Parse query.
          */
         if (hash[key] && 'hasMany' === relationship.kind) {
-          hash.links = {};
-          hash.links[key] = JSON.stringify({
-            key: key,
-            className: hash[key].className
-          });
+          if (!hash[key].__op && hash[key].__op !== 'AddRelation') {
+            if (!hash.links) {
+              hash.links = {};
+            }
+            hash.links[key] = JSON.stringify({
+              key: key,
+              className: hash[key].className
+            });
+          }
 
           delete hash[key].__type;
           delete hash[key].className;
@@ -88,10 +92,6 @@ export default DS.RESTSerializer.extend({
         }
       }, this);
     }
-  },
-
-  serializeIntoHash(hash, type, record, options) {
-    Ember.merge(hash, this.serialize(record, options));
   },
 
   serializeAttribute(record, json, key, attribute) {
@@ -110,7 +110,7 @@ export default DS.RESTSerializer.extend({
 
   serializeBelongsTo(record, json, relationship) {
     var key = relationship.key,
-        belongsTo = record.get(key);
+        belongsTo = record.belongsTo(key);
 
     if (belongsTo) {
       // @TODO: Perhaps this is working around a bug in Ember-Data? Why should
@@ -125,8 +125,8 @@ export default DS.RESTSerializer.extend({
 
       json[key] = {
         '__type': 'Pointer',
-        'className': this.parseClassName(belongsTo.constructor.typeKey),
-        'objectId': belongsTo.get('id')
+        'className': this.parseClassName(belongsTo.type.typeKey),
+        'objectId': belongsTo.id
       };
     }
   },
@@ -145,6 +145,7 @@ export default DS.RESTSerializer.extend({
 
     if (this._canSerialize(key)) {
       var payloadKey;
+
       json[key] = {'objects': []};
 
       // if provided, use the mapping provided by `attrs` in
@@ -171,9 +172,68 @@ export default DS.RESTSerializer.extend({
           objects: objects,
           className: snapshot.type.typeKey
         };
-      }
 
+        // TODO support for polymorphic manyToNone and manyToMany relationships
+      }
     }
-  }
+  },
+
+  // serializeHasMany(record, json, relationship) {
+  //   var key = relationship.key,
+  //       hasMany = record.hasMany(key),
+  //       options = relationship.options;
+
+  //   if (hasMany && hasMany.length > 0) {
+  //     json[key] = {'objects': []};
+
+  //     if (options.relation) {
+  //       json[key].__op = 'AddRelation';
+  //     }
+
+  //     if (options.array) {
+  //       json[key].__op = 'AddUnique';
+  //     }
+
+  //     hasMany.forEach(function(child) {
+  //       json[key].objects.push({
+  //         '__type': 'Pointer',
+  //         'className': child.parseClassName(),
+  //         'objectId': child.get('id')
+  //       });
+  //     });
+
+  //     if (hasMany._deletedItems && hasMany._deletedItems.length) {
+  //       if (options.relation) {
+  //         var addOperation = json[key],
+  //             deleteOperation = {'__op': 'RemoveRelation', 'objects': []};
+
+  //         hasMany._deletedItems.forEach(function(item) {
+  //           deleteOperation.objects.push({
+  //             '__type': 'Pointer',
+  //             'className': item.type,
+  //             'objectId': item.id
+  //           });
+  //         });
+
+  //         json[key] = {'__op': 'Batch', 'ops': [addOperation, deleteOperation]};
+  //       }
+
+  //       if (options.array) {
+  //         json[key].deleteds = {'__op': 'Remove', 'objects': []};
+
+  //         hasMany._deletedItems.forEach(function(item) {
+  //           json[key].deleteds.objects.push({
+  //             '__type': 'Pointer',
+  //             'className': item.type,
+  //             'objectId': item.id
+  //           });
+  //         });
+  //       }
+  //     }
+
+  //   } else {
+  //     delete json[key];
+  //   }
+  // }
 
 });

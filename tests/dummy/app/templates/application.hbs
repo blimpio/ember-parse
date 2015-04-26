@@ -27,6 +27,14 @@
 <a href="#" {{action "createObject"}}>Create Object</a>
 
 <table>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Friends</th>
+    <th>Cars</th>
+    <th>Actions</th>
+  </tr>
   {{#each model as |thing|}}
     <tr>
       <td>{{thing.id}}</td>
@@ -34,13 +42,16 @@
       <td>{{thing.category.name}}</td>
       <td>
         {{#each thing.friends as |friend|}}
-          <p>{{friend.name}}</p>
+          {{friend.name}} <a href="#" {{action 'removeFriend' thing friend}}>X</a><br>
+        {{/each}}
+      </td>
+      <td>
+        {{#each thing.cars as |car|}}
+          {{car.name}}<br>
         {{/each}}
       </td>
       <td>
         <a href="#" {{action "deleteObject" thing}} style="color:red">Delete</a>
-      </td>
-      <td>
         <a href="#" {{action "updateObject" thing}}>Update</a>
       </td>
     </tr>

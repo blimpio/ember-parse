@@ -1,7 +1,7 @@
 /*
  * Some portions extracted from:
- * Parse JavaScript SDK
- * Version: 1.4.2
+ * Parse JavaScript SDK — Version: 1.4.2
+ *
  */
 
 import Ember from 'ember';
@@ -90,14 +90,14 @@ export default DS.RESTAdapter.extend({
     return hash;
   },
 
-  ajaxError: function(jqXHR, responseText, errorThrown) {
-    if (jqXHR.responseJSON.error === 'invalid session token') {
-      // If user is not authenticated invalidate session
-      this.container.lookup('service:session').invalidate();
-    }
+  // ajaxError: function(jqXHR, responseText, errorThrown) {
+  //   if (jqXHR.responseJSON.error === 'invalid session token') {
+  //     // If user is not authenticated invalidate session
+  //     this.container.lookup('service:session').invalidate();
+  //   }
 
-    return this._super(jqXHR, responseText, errorThrown);
-  },
+  //   return this._super(jqXHR, responseText, errorThrown);
+  // },
 
   pathForType(type) {
     if ('user' === type) {
@@ -131,7 +131,7 @@ export default DS.RESTAdapter.extend({
   */
   createRecord(store, type, record) {
     var serializer = store.serializerFor(type.typeKey),
-      data = {},
+      data = {_method: 'POST'},
       adapter = this,
       ParseACL = record.record.ParseACL;
 
@@ -190,7 +190,6 @@ export default DS.RESTAdapter.extend({
     }
 
     data.where = {};
-    data._method = 'GET';
 
     return this.ajax(this.buildURL(type.typeKey), 'POST', {data: data});
   },
