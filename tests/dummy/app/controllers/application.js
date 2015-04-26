@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
   actions: {
     createObject() {
       var friend1 = this.store.createRecord('friend', {
-        name: 'Juanito'
+        name: 'Juanito',
       });
 
       var friend2 = this.store.createRecord('friend', {
@@ -25,7 +25,14 @@ export default Ember.Controller.extend({
       });
 
       var cat = this.store.createRecord('category', {
-        name: 'Category'
+        name: 'Category',
+        ParseACL: {
+          owner: this.get('session.userId'),
+          permissions: {
+            read: true,
+            write: true
+          }
+        }
       });
 
       var thingObj = {

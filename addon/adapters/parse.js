@@ -135,13 +135,23 @@ export default DS.RESTAdapter.extend({
       adapter = this,
       ParseACL = record.record.ParseACL;
 
-    if (ParseACL && ParseACL.owner) {
-      data.ACL = {
-        [ParseACL.owner]: {
+    if (ParseACL) {
+      var policy = {}
+
+      if (ParseACL.owner) {
+        policy[ParseACL.owner] = {}
+      }
+
+      if (ParseACL.permissions) {
+        policy[ParseACL.owner] = ParseACL.permissions;
+      } else {
+        policy[ParseACL.owner] = {
           read: true,
           write: true
         }
-      };
+      }
+
+      data.ACL = policy;
     }
 
     serializer.serializeIntoHash(data, type, record, {includeId: true});
