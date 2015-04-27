@@ -30,7 +30,7 @@ This is still a work in progress.
 #### Features
 - [ ] ApplicationRouteMixin
 - [ ] AuthenticatedRouteMixin
-- [ ] Blueprint to generate application files
+- [X] Blueprint to generate application files
 
 ## Getting Started
 Since this is still a work in progress, we don't have any documentation. In the meantime you can take a look at the [dummy app](https://github.com/GetBlimp/ember-parse/tree/master/tests/dummy) to get an idea of how the addon works.
@@ -38,7 +38,8 @@ Since this is still a work in progress, we don't have any documentation. In the 
 ## Installation
 
 * `ember install:addon ember-parse`
-* `ember generate ember-parse` :point_left: not implemented
+* `ember generate ember-parse-core` :point_left: To add the adapter and serializer
+* `ember generate ember-parse-session` :point_left: To add the session service and user model
 
 
 ## Development
