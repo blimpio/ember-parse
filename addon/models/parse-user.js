@@ -1,13 +1,13 @@
 import DS from 'ember-data';
 
-var User = DS.Model.extend({
-  username: DS.attr('string'),
-  password: DS.attr('password'),
-  email: DS.attr('string'),
-  emailVerified: DS.attr('boolean'),
-  sessionToken: DS.attr('string'),
-  createdAt: DS.attr('date'),
-  updatedAt: DS.attr('date')
-});
+var attr = DS.attr;
 
-export default User;
+export default DS.Model.extend({
+  username: attr('string'),
+  password: attr('password'),
+  email: attr('string'),
+  emailVerified: attr('boolean'),
+  sessionToken: attr('string'),
+  createdAt: attr('date'),
+  updatedAt: attr('date')
+});
