@@ -119,7 +119,7 @@ export default DS.RESTAdapter.extend({
     return Ember.String.capitalize(Ember.String.camelize(type));
   },
 
-  parseClassName: function (key) {
+  parseClassName(key) {
     return Ember.String.capitalize(key);
   },
 
@@ -150,7 +150,7 @@ export default DS.RESTAdapter.extend({
     return promise;
   },
 
-  updateRecord: function(store, type, snapshot) {
+  updateRecord(store, type, snapshot) {
     var data = {_method: 'PUT'},
         id = snapshot.id,
         serializer = store.serializerFor(type.typeKey);
@@ -163,7 +163,7 @@ export default DS.RESTAdapter.extend({
     return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
   },
 
-  deleteRecord: function(store, type, snapshot) {
+  deleteRecord(store, type, snapshot) {
     var data = {_method: 'DELETE'},
         id = snapshot.id;
 
