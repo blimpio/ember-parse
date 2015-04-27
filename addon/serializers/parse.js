@@ -61,7 +61,7 @@ export default DS.RESTSerializer.extend({
     this._super(type, hash);
   },
 
-  normalizeRelationships: function(type, hash) {
+  normalizeRelationships(type, hash) {
     if (this.keyForRelationship) {
       type.eachRelationship(function(key, relationship) {
         if (hash[key] && 'belongsTo' === relationship.kind) {
@@ -132,7 +132,7 @@ export default DS.RESTSerializer.extend({
     }
   },
 
-  serializeIntoHash: function(hash, type, snapshot, options) {
+  serializeIntoHash(hash, type, snapshot, options) {
     var ParseACL = snapshot.record.get('ParseACL');
 
     // Add ACL
