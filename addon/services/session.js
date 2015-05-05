@@ -49,35 +49,35 @@ export default Ember.Service.extend({
         adapter = store.adapterFor('application'),
         serializer = store.serializerFor(model);
 
-      var data = {
-        _method: 'GET',
-        username: username,
-        password: password
-      };
+    var data = {
+      _method: 'GET',
+      username: username,
+      password: password
+    };
 
-      return adapter.ajax(adapter.buildURL('login'), 'POST', {data: data})
-        .then((response) => {
-          var sessionData = {
-            userId: response.objectId,
-            sessionToken: response.sessionToken,
-            _response: response
-          };
+    return adapter.ajax(adapter.buildURL('login'), 'POST', { data: data })
+      .then((response) => {
+        var sessionData = {
+          userId: response.objectId,
+          sessionToken: response.sessionToken,
+          _response: response
+        };
 
-          this.setProperties(sessionData);
-          this.sessionStore.save(key, sessionData);
+        this.setProperties(sessionData);
+        this.sessionStore.save(key, sessionData);
 
-          // Set adapter properties
-          delete sessionData._response;
-          adapter.setProperties(sessionData);
+        // Set adapter properties
+        delete sessionData._response;
+        adapter.setProperties(sessionData);
 
-          serializer.normalize(model, response);
-          var record = store.push(model, response);
+        serializer.normalize(model, response);
+        var record = store.push(model, response);
 
-          return record;
+        return record;
 
-        }, (reason) => {
-          return Ember.RSVP.reject(reason);
-        });
+      }, (reason) => {
+        return Ember.RSVP.reject(reason);
+      });
   },
 
   invalidate() {
@@ -111,7 +111,7 @@ export default Ember.Service.extend({
         adapter = store.adapterFor(model),
         serializer = store.serializerFor(model);
 
-    return adapter.ajax(adapter.buildURL(model.typeKey), 'POST', {data: userData})
+    return adapter.ajax(adapter.buildURL(model.typeKey), 'POST', { data: userData })
       .then(function(response) {
           serializer.normalize(model, response);
           response.email = response.email || userData.email;
@@ -132,7 +132,7 @@ export default Ember.Service.extend({
           email: email
         };
 
-    return adapter.ajax(adapter.buildURL('requestPasswordReset'),'POST', {data:data})
+    return adapter.ajax(adapter.buildURL('requestPasswordReset'), 'POST', { data: data })
       .catch(function(response) {
         return Ember.RSVP.reject(response.responseJSON);
       });

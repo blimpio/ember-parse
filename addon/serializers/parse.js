@@ -42,7 +42,7 @@ export default DS.RESTSerializer.extend({
   */
   extractMeta(store, type, payload) {
     if (payload && payload.count) {
-      store.metaForType(type, {count: payload.count});
+      store.metaForType(type, { count: payload.count });
       delete payload.count;
     }
   },
@@ -172,7 +172,7 @@ export default DS.RESTSerializer.extend({
     if (this._canSerialize(key)) {
       var payloadKey;
 
-      json[key] = {'objects': []};
+      json[key] = { 'objects': [] };
 
       // if provided, use the mapping provided by `attrs` in
       // the serializer
@@ -245,6 +245,6 @@ export default DS.RESTSerializer.extend({
         // TODO support for polymorphic manyToNone and manyToMany relationships
       }
     }
-  },
+  }
 
 });

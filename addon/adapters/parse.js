@@ -33,7 +33,7 @@ export default DS.RESTAdapter.extend({
      * avoid pre-flight.
      * Parse._ajax
      */
-    this.set('headers', {'Content-Type': 'text/plain'});
+    this.set('headers', { 'Content-Type': 'text/plain' });
   },
 
   _getInstallationId() {
@@ -131,13 +131,13 @@ export default DS.RESTAdapter.extend({
   */
   createRecord(store, type, record) {
     var serializer = store.serializerFor(type.typeKey),
-      data = {_method: 'POST'},
+      data = { _method: 'POST' },
       adapter = this;
 
-    serializer.serializeIntoHash(data, type, record, {includeId: true});
+    serializer.serializeIntoHash(data, type, record, { includeId: true });
 
     var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-      adapter.ajax(adapter.buildURL(type.typeKey), 'POST', {data: data})
+      adapter.ajax(adapter.buildURL(type.typeKey), 'POST', { data: data })
         .then(function(json) {
           var completed = Ember.merge(data, json);
           resolve(completed);
@@ -151,7 +151,7 @@ export default DS.RESTAdapter.extend({
   },
 
   updateRecord(store, type, snapshot) {
-    var data = {_method: 'PUT'},
+    var data = { _method: 'PUT' },
         id = snapshot.id,
         serializer = store.serializerFor(type.typeKey);
 
@@ -160,23 +160,23 @@ export default DS.RESTAdapter.extend({
     // debugger;
     // snapshot.record._relationships.friends.members
     // snapshot.record._relationships.friends.canonicalMembers
-    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
+    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', { data: data });
   },
 
   deleteRecord(store, type, snapshot) {
-    var data = {_method: 'DELETE'},
+    var data = { _method: 'DELETE' },
         id = snapshot.id;
 
-    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
+    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', { data: data });
   },
 
   find(store, type, id, snapshot) {
-    var data = {_method: 'GET'};
-    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', {data: data});
+    var data = { _method: 'GET' };
+    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', { data: data });
   },
 
   findAll(store, type, sinceToken) {
-    var data = {_method: 'GET'};
+    var data = { _method: 'GET' };
 
     if (sinceToken) {
       data.since = sinceToken;
@@ -184,7 +184,7 @@ export default DS.RESTAdapter.extend({
 
     data.where = {};
 
-    return this.ajax(this.buildURL(type.typeKey), 'POST', {data: data});
+    return this.ajax(this.buildURL(type.typeKey), 'POST', { data: data });
   },
 
   /**
@@ -211,7 +211,7 @@ export default DS.RESTAdapter.extend({
     // the request is to the related type and not the type for the record.
     // the query is where there is a pointer to this record.
     return this.ajax(
-              this.buildURL(related.className), 'POST', {data: query});
+              this.buildURL(related.className), 'POST', { data: query });
   },
 
   /**
