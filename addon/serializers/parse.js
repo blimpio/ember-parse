@@ -123,9 +123,15 @@ export default DS.RESTSerializer.extend({
         belongsTo = belongsTo.get('content');
       }
 
+      var _className = this.parseClassName(belongsTo.type.typeKey);
+
+      if (_className === 'User') {
+        _className = '_User';
+      }
+
       json[key] = {
         '__type': 'Pointer',
-        'className': this.parseClassName(belongsTo.type.typeKey),
+        'className': _className,
         'objectId': belongsTo.id
       };
 
