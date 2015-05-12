@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+  user: null,
   userId: null,
   sessionToken: null,
   sessionStoreKey: 'ember-parse:session',
@@ -25,7 +26,8 @@ export default Ember.Service.extend({
 
         // Create a user instance and push to store
         serializer.normalize(model, sessionData._response);
-        store.push(model, sessionData._response);
+        var record = store.push(model, sessionData._response);
+        this.user = record;
 
         // Set adapter properties
         delete sessionData._response;
@@ -72,6 +74,7 @@ export default Ember.Service.extend({
 
         serializer.normalize(model, response);
         var record = store.push(model, response);
+        this.user = record;
 
         return record;
 
