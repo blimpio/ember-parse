@@ -90,15 +90,6 @@ export default DS.RESTAdapter.extend({
     return hash;
   },
 
-  // ajaxError: function(jqXHR, responseText, errorThrown) {
-  //   if (jqXHR.responseJSON.error === 'invalid session token') {
-  //     // If user is not authenticated invalidate session
-  //     this.container.lookup('service:session').invalidate();
-  //   }
-
-  //   return this._super(jqXHR, responseText, errorThrown);
-  // },
-
   pathForType(type) {
     if ('user' === type) {
       return 'users';
