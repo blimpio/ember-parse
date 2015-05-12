@@ -109,6 +109,9 @@ export default DS.RESTAdapter.extend({
     } else if ('requestPasswordReset' === type) {
       return type;
 
+    } else if ('functions' === type) {
+      return 'functions';
+
     } else {
       return this.classesPath + '/' + this.parsePathForType(type);
     }
