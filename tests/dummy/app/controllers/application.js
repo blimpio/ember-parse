@@ -1,15 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  cloud: Ember.inject.service('cloud'),
   isAuthenticated: Ember.computed.alias('session.isAuthenticated'),
   username: 'user@example.com',
   password: 'abc123',
   loginError: null,
+  cloudCodeResult: null,
 
   actions: {
     createObject() {
       var friend1 = this.store.createRecord('friend', {
-        name: 'Juanito',
+        name: 'Juanito'
       });
 
       var friend2 = this.store.createRecord('friend', {
@@ -120,7 +122,18 @@ export default Ember.Controller.extend({
       this.get('session').requestPasswordReset(this.get('username'))
         .then(function(response) {
           console.log(response);
-       });
+        });
+    },
+
+    runCloudCode() {
+      this.get('cloud').run('sendData', {
+        thing: 'car',
+        color: 'red'
+      })
+      .then((response) => {
+        console.log(response);
+        this.set('cloudCodeResult', response.result.message);
+      });
     }
 
   }
