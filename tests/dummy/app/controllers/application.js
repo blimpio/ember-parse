@@ -27,14 +27,7 @@ export default Ember.Controller.extend({
       });
 
       var cat = this.store.createRecord('category', {
-        name: 'Category',
-        ParseACL: {
-          owner: this.get('session.userId'),
-          permissions: {
-            read: true,
-            write: true
-          }
-        }
+        name: 'Category'
       });
 
       var thingObj = {
