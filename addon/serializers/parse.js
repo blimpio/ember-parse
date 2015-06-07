@@ -7,14 +7,14 @@ export default DS.RESTSerializer.extend({
 
   extractArray(store, primaryType, payload) {
     var namespacedPayload = {};
-    namespacedPayload[Ember.String.pluralize(primaryType.typeKey)] = payload.results;
+    namespacedPayload[Ember.String.pluralize(primaryType.modelName)] = payload.results;
 
     return this._super(store, primaryType, namespacedPayload);
   },
 
   extractSingle(store, primaryType, payload, recordId) {
     var namespacedPayload = {};
-    namespacedPayload[primaryType.typeKey] = payload; // this.normalize(primaryType, payload);
+    namespacedPayload[primaryType.modelName] = payload; // this.normalize(primaryType, payload);
 
     return this._super(store, primaryType, namespacedPayload, recordId);
   },
@@ -123,7 +123,7 @@ export default DS.RESTSerializer.extend({
         belongsTo = belongsTo.get('content');
       }
 
-      var _className = this.parseClassName(belongsTo.type.typeKey);
+      var _className = this.parseClassName(belongsTo.type.modelName);
 
       if (_className === 'User') {
         _className = '_User';
@@ -192,7 +192,7 @@ export default DS.RESTSerializer.extend({
       if (relationshipType === 'manyToNone' || relationshipType === 'manyToMany') {
         var objects = [],
             objectsForKey = snapshot.hasMany(key),
-            objectsBeforeUpdate = snapshot.record._relationships[key].canonicalMembers,
+            objectsBeforeUpdate = snapshot.record._internalModel._relationships.get(key).canonicalMembers,
             operation = 'AddRelation';
 
         // Check if this is removing the last relation for a key
@@ -202,7 +202,7 @@ export default DS.RESTSerializer.extend({
 
           objects.push({
             __type: 'Pointer',
-            className: this.parseClassName(snapshot.type.typeForRelationship(key).typeKey),
+            className: this.parseClassName(snapshot.type.typeForRelationship(key).modelName),
             objectId: objectsBeforeUpdate.list[0].id
           });
         }
@@ -225,7 +225,7 @@ export default DS.RESTSerializer.extend({
               if (objectsToKeepIds.indexOf(obj.id) < 0) {
                 objects.push({
                   __type: 'Pointer',
-                  className: this.parseClassName(item.typeKey),
+                  className: this.parseClassName(item.modelName),
                   objectId: obj.id
                 });
               }
@@ -236,7 +236,7 @@ export default DS.RESTSerializer.extend({
             // (objectsForKey.length > objectsBeforeUpdate.size)
             objects.push({
               __type: 'Pointer',
-              className: this.parseClassName(item.typeKey),
+              className: this.parseClassName(item.modelName),
               objectId: item.id
             });
           }
@@ -246,7 +246,7 @@ export default DS.RESTSerializer.extend({
         json[payloadKey] = {
           __op: operation,
           objects: objects,
-          className: this.parseClassName(snapshot.type.typeKey)
+          className: this.parseClassName(snapshot.type.modelName)
         };
         // TODO support for polymorphic manyToNone and manyToMany relationships
       }

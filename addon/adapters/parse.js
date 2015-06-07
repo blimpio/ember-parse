@@ -124,14 +124,14 @@ export default DS.RESTAdapter.extend({
   * latest data.
   */
   createRecord(store, type, record) {
-    var serializer = store.serializerFor(type.typeKey),
+    var serializer = store.serializerFor(type.modelName),
       data = { _method: 'POST' },
       adapter = this;
 
     serializer.serializeIntoHash(data, type, record, { includeId: true });
 
     var promise = new Ember.RSVP.Promise(function(resolve, reject) {
-      adapter.ajax(adapter.buildURL(type.typeKey), 'POST', { data: data })
+      adapter.ajax(adapter.buildURL(type.modelName), 'POST', { data: data })
         .then(function(json) {
           var completed = Ember.merge(data, json);
           resolve(completed);
@@ -147,26 +147,26 @@ export default DS.RESTAdapter.extend({
   updateRecord(store, type, snapshot) {
     var data = { _method: 'PUT' },
         id = snapshot.id,
-        serializer = store.serializerFor(type.typeKey);
+        serializer = store.serializerFor(type.modelName);
 
     serializer.serializeIntoHash(data, type, snapshot);
 
     // debugger;
     // snapshot.record._relationships.friends.members
     // snapshot.record._relationships.friends.canonicalMembers
-    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', { data: data });
+    return this.ajax(this.buildURL(type.modelName, id, snapshot), 'POST', { data: data });
   },
 
   deleteRecord(store, type, snapshot) {
     var data = { _method: 'DELETE' },
         id = snapshot.id;
 
-    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', { data: data });
+    return this.ajax(this.buildURL(type.modelName, id, snapshot), 'POST', { data: data });
   },
 
   find(store, type, id, snapshot) {
     var data = { _method: 'GET' };
-    return this.ajax(this.buildURL(type.typeKey, id, snapshot), 'POST', { data: data });
+    return this.ajax(this.buildURL(type.modelName, id, snapshot), 'POST', { data: data });
   },
 
   findAll(store, type, sinceToken) {
@@ -178,7 +178,7 @@ export default DS.RESTAdapter.extend({
 
     data.where = {};
 
-    return this.ajax(this.buildURL(type.typeKey), 'POST', { data: data });
+    return this.ajax(this.buildURL(type.modelName), 'POST', { data: data });
   },
 
   /**
@@ -193,7 +193,7 @@ export default DS.RESTAdapter.extend({
         '$relatedTo': {
           'object': {
             '__type': 'Pointer',
-            'className': this.parseClassName(record.typeKey),
+            'className': this.parseClassName(record.modelName),
             'objectId': record.id
           },
           key: related.key

@@ -10,10 +10,10 @@ export default Ember.Service.extend({
     Ember.Logger.debug('DEBUG: Parse session service: init()');
 
     var key = this.get('sessionStoreKey'),
-        store = this.container.lookup('store:main'),
+        store = this.container.lookup('store:application'),
         model = store.modelFor('user'),
         adapter = store.adapterFor('application'),
-        serializer = store.serializerFor(model);
+        serializer = store.serializerFor('user');
 
     this.sessionStore.get(key).then((sessionData) => {
       if (sessionData && sessionData.userId &&
@@ -26,7 +26,7 @@ export default Ember.Service.extend({
 
         // Create a user instance and push to store
         serializer.normalize(model, sessionData._response);
-        var record = store.push(model, sessionData._response);
+        var record = store.push('user', sessionData._response);
         this.user = record;
 
         // Set adapter properties
@@ -46,10 +46,10 @@ export default Ember.Service.extend({
 
   authenticate(username, password) {
     var key = this.get('sessionStoreKey'),
-        store = this.container.lookup('store:main'),
+        store = this.container.lookup('store:application'),
         model = store.modelFor('user'),
         adapter = store.adapterFor('application'),
-        serializer = store.serializerFor(model);
+        serializer = store.serializerFor('user');
 
     var data = {
       _method: 'GET',
@@ -73,7 +73,7 @@ export default Ember.Service.extend({
         adapter.setProperties(sessionData);
 
         serializer.normalize(model, response);
-        var record = store.push(model, response);
+        var record = store.push('user', response);
         this.user = record;
 
         return record;
@@ -86,7 +86,7 @@ export default Ember.Service.extend({
   invalidate() {
     if (this.get('isAuthenticated')) {
       var key = this.get('sessionStoreKey'),
-          store = this.container.lookup('store:main'),
+          store = this.container.lookup('store:application'),
           adapter = store.adapterFor('application');
 
       // Remove user from store
@@ -109,17 +109,17 @@ export default Ember.Service.extend({
   },
 
   signup(userData) {
-    var store = this.container.lookup('store:main'),
+    var store = this.container.lookup('store:application'),
         model = store.modelFor('user'),
-        adapter = store.adapterFor(model),
-        serializer = store.serializerFor(model);
+        adapter = store.adapterFor('user'),
+        serializer = store.serializerFor('user');
 
-    return adapter.ajax(adapter.buildURL(model.typeKey), 'POST', { data: userData })
+    return adapter.ajax(adapter.buildURL(model.modelName), 'POST', { data: userData })
       .then(function(response) {
           serializer.normalize(model, response);
           response.email = response.email || userData.email;
           response.username = response.username || userData.username;
-          var record = store.push(model, response);
+          var record = store.push('user', response);
           return record;
         },
         function(response) {
@@ -128,7 +128,7 @@ export default Ember.Service.extend({
   },
 
   requestPasswordReset(email) {
-    var store = this.container.lookup('store:main'),
+    var store = this.container.lookup('store:application'),
         adapter = store.adapterFor('application'),
         data = {
           _method: 'POST',

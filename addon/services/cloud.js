@@ -7,7 +7,7 @@ export default Ember.Service.extend({
    * @param {Object} data The parameters to send to the cloud function.
    */
   run(name, data) {
-    var store = this.container.lookup('store:main'),
+    var store = this.container.lookup('store:application'),
         adapter = store.adapterFor('application');
 
     return adapter.ajax(adapter.buildURL('functions', name), 'POST', { data: data });
