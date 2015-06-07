@@ -1,6 +1,6 @@
 {
   "name": "ember-parse",
-  "version": "0.0.1-alpha",
+  "version": "0.0.2-alpha",
   "description": "All you need to use Parse. Includes an adapter, serializer and a session service for auth.",
   "directories": {
     "doc": "doc",
