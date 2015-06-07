@@ -108,6 +108,9 @@ export default Ember.Controller.extend({
       }).then((user) => {
         console.log(user);
         this.send('login');
+      }).catch((reason) => {
+        var err = `Code ${reason.code}: ${reason.error}`;
+        console.error(err);
       });
     },
 
