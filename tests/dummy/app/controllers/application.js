@@ -124,8 +124,8 @@ export default Ember.Controller.extend({
         color: 'red'
       })
       .then((response) => {
-        console.log(response);
-        this.set('cloudCodeResult', response.result.message);
+        response.result.body = JSON.parse(response.result.body);
+        this.set('cloudCodeResult', JSON.stringify(response, null, 2));
       });
     }
 
