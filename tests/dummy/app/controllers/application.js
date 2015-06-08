@@ -43,20 +43,17 @@ export default Ember.Controller.extend({
 
       var thing = this.store.createRecord('thing', thingObj);
 
-      friend1.save().then(()=> {
-        friend2.save().then(()=> {
-          car1.save().then(()=> {
-            car2.save().then(()=> {
-              cat.save().then(()=> {
-                thing.get('friends').pushObjects([friend1, friend2]);
-                thing.get('cars').pushObjects([car1]);
-                thing.set('category', cat);
-                thing.save();
-              });
-            });
-          });
+      friend1.save()
+        .then(() => friend2.save())
+        .then(() => car1.save())
+        .then(() => car2.save())
+        .then(() => cat.save())
+        .then(() => {
+          thing.get('friends').pushObjects([friend1, friend2]);
+          thing.get('cars').pushObjects([car1]);
+          thing.set('category', cat);
+          thing.save();
         });
-      });
     },
 
     removeFriend(thing, friend) {
