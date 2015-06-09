@@ -1,6 +1,6 @@
 # Parse for Ember.js
 
-This addon has all you need to use [Parse](https://parse.com/) in your Ember.js application. It includes an adapter and serializer to integrate with ember-data and a session service to provide authentiction.
+This addon has all you need to use [Parse](https://parse.com/) in your Ember.js application. It includes an adapter and serializer to integrate with ember-data and a session service to provide authentication.
 
 ## WORK-IN-PROGRESS
 This is still a work in progress.
