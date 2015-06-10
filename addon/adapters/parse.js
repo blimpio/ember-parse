@@ -56,6 +56,7 @@ export default DS.RESTAdapter.extend({
 
   ajaxOptions(url, type, options) {
     var hash = options || {};
+    hash.data = hash.data || {};
     hash.url = url;
     hash.type = type;
     hash.dataType = 'json';
@@ -95,6 +96,9 @@ export default DS.RESTAdapter.extend({
       return 'users';
 
     } else if ('login' === type) {
+      return type;
+
+    } else if ('logout' === type) {
       return type;
 
     } else if ('requestPasswordReset' === type) {

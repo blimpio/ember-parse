@@ -89,20 +89,24 @@ export default Ember.Service.extend({
           store = this.container.lookup('store:application'),
           adapter = store.adapterFor('application');
 
-      // Remove user from store
-      store.find('user', this.get('userId')).then((user) => {
-        user.unloadRecord();
-      });
+      // Call logout on Parse
+      return adapter.ajax(adapter.buildURL('logout'), 'POST')
+        .then(() => {
+          // Remove user from store
+          store.find('user', this.get('userId')).then((user) => {
+            user.unloadRecord();
+          });
 
-      var sessionData = {
-        userId: null,
-        sessionToken: null
-      };
+          var sessionData = {
+            userId: null,
+            sessionToken: null
+          };
 
-      this.setProperties(sessionData);
-      adapter.setProperties(sessionData);
+          this.setProperties(sessionData);
+          adapter.setProperties(sessionData);
 
-      return this.sessionStore.destroy(key);
+          return this.sessionStore.destroy(key);
+        });
     } else {
       return Ember.RSVP.resolve();
     }
