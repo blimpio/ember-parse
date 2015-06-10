@@ -63,3 +63,9 @@
 <br>
 <button {{action 'runCloudCode'}}>Run Cloud Code</button>
 <pre>{{cloudCodeResult}}</pre>
+
+{{#if isAuthenticated}}
+  {{#link-to 'users'}}Users{{/link-to}}
+{{/if}}
+
+{{outlet}}
