@@ -29,7 +29,7 @@ This is still a work in progress.
 
 #### Features
 - [ ] ApplicationRouteMixin
-- [ ] AuthenticatedRouteMixin
+- [X] AuthenticatedRouteMixin
 - [X] Blueprint to generate application files
 
 ## Getting Started
@@ -41,6 +41,9 @@ Since this is still a work in progress, we don't have any documentation. In the 
 * `ember generate ember-parse-core` :point_left: To add the adapter and serializer
 * `ember generate ember-parse-session` :point_left: To add the session service and user model
 
+## Compatibility
+
+* ember-data >= "1.0.0-beta.19.1"
 
 ## Development
 
@@ -57,10 +60,6 @@ Since this is still a work in progress, we don't have any documentation. In the 
 
 * `ember test`
 * `ember test --server`
-
-## Compatibility
-
-* ember-data >= "1.0.0-beta.19.1"
 
 ## Building
 
