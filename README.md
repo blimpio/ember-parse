@@ -58,6 +58,10 @@ Since this is still a work in progress, we don't have any documentation. In the 
 * `ember test`
 * `ember test --server`
 
+## Compatibility
+
+* ember-data >= "1.0.0-beta.19.1"
+
 ## Building
 
 * `ember build`
