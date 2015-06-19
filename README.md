@@ -41,6 +41,18 @@ Since this is still a work in progress, we don't have any documentation. In the 
 * `ember generate ember-parse-core` :point_left: To add the adapter and serializer
 * `ember generate ember-parse-session` :point_left: To add the session service and user model
 
+#### config/environment.js
+
+```js
+ENV['ember-parse'] = {
+  PARSE_APPLICATION_ID: '<your app id goes here>',
+  PARSE_JAVASCRIPT_KEY: '<your key goes here>',
+  session: {
+    loginRoute: 'index' // Route where your login form is located
+  }
+};
+```
+
 ## Compatibility
 
 * ember-data >= "1.0.0-beta.19.1"
