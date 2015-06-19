@@ -168,7 +168,7 @@ export default DS.RESTAdapter.extend({
     return this.ajax(this.buildURL(type.modelName, id, snapshot), 'POST', { data: data });
   },
 
-  find(store, type, id, snapshot) {
+  findRecord(store, type, id, snapshot) {
     var data = { _method: 'GET' };
     return this.ajax(this.buildURL(type.modelName, id, snapshot), 'POST', { data: data });
   },
@@ -230,5 +230,13 @@ export default DS.RESTAdapter.extend({
   findQuery(store, type, query) {
     query._method = 'GET';
     return this.ajax(this.buildURL(type.modelName), 'POST', { data: query });
+  },
+
+  shouldReloadAll() {
+    return false;
+  },
+
+  shouldBackgroundReloadRecord() {
+    return false;
   }
 });
