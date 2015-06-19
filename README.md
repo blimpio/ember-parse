@@ -49,7 +49,7 @@ ENV['ember-parse'] = {
   PARSE_JAVASCRIPT_KEY: '<your key goes here>',
   session: {
     authenticationRoute: 'index', // Route where your login form is located
-    routeIfAlreadyAuthenticated: 'dashboard' // Route to redirect logged in users
+    ifAlreadyAuthenticatedRoute: 'dashboard' // Route to redirect logged in users
   }
 };
 ```
