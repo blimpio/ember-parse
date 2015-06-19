@@ -25,7 +25,7 @@ module.exports = function(environment) {
     PARSE_APPLICATION_ID: 'CIYQmnUpXGDKJiGsySpST80UT0Q6CkPaTdBJlD5T',
     PARSE_JAVASCRIPT_KEY: 'hMcPUKC7NDDGtUQyGMqmgnU0IVK3R65NlADbWcMJ',
     session: {
-      loginRoute: 'index'
+      authenticationRoute: 'index'
     }
   };
 
