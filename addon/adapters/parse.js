@@ -91,6 +91,16 @@ export default DS.RESTAdapter.extend({
     return hash;
   },
 
+  ajaxError(jqXHR, responseText, errorThrown) {
+    if (jqXHR.responseJSON.error === 'invalid session token') {
+      // invalid session
+      var session = this.container.lookup('service:session');
+      session.resetSession();
+    }
+
+    return this._super(jqXHR, responseText, errorThrown);
+  },
+
   pathForType(type) {
     if ('user' === type) {
       return 'users';
