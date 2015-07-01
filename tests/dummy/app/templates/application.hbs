@@ -8,9 +8,9 @@
     <button type="submit">Reset password</button>
   </form>
 {{else}}
-  {{#if loginError}}
+  {{#if authError}}
     <p>
-      {{loginError}}
+      {{authError}}
     </p>
   {{/if}}
 
@@ -63,3 +63,6 @@
 <br>
 <button {{action 'runCloudCode'}}>Run Cloud Code</button>
 <pre>{{cloudCodeResult}}</pre>
+<br>
+<button {{action 'triggerError'}}>Trigger Error</button>
+<pre>{{triggeredError}}</pre>

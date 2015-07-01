@@ -5,8 +5,9 @@ export default Ember.Controller.extend({
   isAuthenticated: Ember.computed.alias('session.isAuthenticated'),
   username: 'user@example.com',
   password: 'abc123',
-  loginError: null,
+  authError: null,
   cloudCodeResult: null,
+  triggeredError: null,
 
   actions: {
     createObject() {
@@ -80,13 +81,13 @@ export default Ember.Controller.extend({
       this.get('session').authenticate(this.get('username'), this.get('password'))
         .then((user) => {
           console.log('Logged in:', user.get('email'));
-          this.set('loginError', null);
+          this.set('authError', null);
           this.send('reloadData');
         })
         .catch((reason) => {
-          var err = `Code ${reason.responseJSON.code}: ${reason.responseJSON.error}`;
+          var err = `Code ${reason.errors[0].code}: ${reason.errors[0].details}`;
           console.error(err);
-          this.set('loginError', err);
+          this.set('authError', err);
         });
     },
 
@@ -106,8 +107,9 @@ export default Ember.Controller.extend({
         console.log(user);
         this.send('login');
       }).catch((reason) => {
-        var err = `Code ${reason.code}: ${reason.error}`;
+        var err = `Code ${reason.errors[0].code}: ${reason.errors[0].details}`;
         console.error(err);
+        this.set('authError', err);
       });
     },
 
@@ -126,6 +128,13 @@ export default Ember.Controller.extend({
       .then((response) => {
         response.result.body = JSON.parse(response.result.body);
         this.set('cloudCodeResult', JSON.stringify(response, null, 2));
+      });
+    },
+
+    triggerError() {
+      this.get('cloud').run('notExistingCode')
+      .catch((response) => {
+        this.set('triggeredError', JSON.stringify(response, null, 2));
       });
     }
 
