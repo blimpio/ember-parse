@@ -101,6 +101,17 @@ export default DS.RESTAdapter.extend({
     return this._super(jqXHR, responseText, errorThrown);
   },
 
+  normalizeErrorResponse: function(status, headers, payload) {
+    return [
+      {
+        status: `${status}`,
+        title: 'The backend responded with an error',
+        details: payload.error,
+        code: payload.code
+      }
+    ];
+  },
+
   pathForType(type) {
     if ('user' === type) {
       return 'users';
