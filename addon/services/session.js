@@ -77,9 +77,6 @@ export default Ember.Service.extend({
         this.user = record;
 
         return record;
-
-      }, (reason) => {
-        return Ember.RSVP.reject(reason);
       });
   },
 
@@ -131,11 +128,8 @@ export default Ember.Service.extend({
           serializer.normalize(model, response);
           response.email = response.email || userData.email;
           response.username = response.username || userData.username;
-          var record = store.push('user', response);
-          return record;
-        },
-        function(response) {
-          return Ember.RSVP.reject(response.responseJSON);
+
+          return store.push('user', response);
         });
   },
 
@@ -147,10 +141,7 @@ export default Ember.Service.extend({
           email: email
         };
 
-    return adapter.ajax(adapter.buildURL('requestPasswordReset'), 'POST', { data: data })
-      .catch(function(response) {
-        return Ember.RSVP.reject(response.responseJSON);
-      });
+    return adapter.ajax(adapter.buildURL('requestPasswordReset'), 'POST', { data: data });
   },
 
   sessionStore: {
