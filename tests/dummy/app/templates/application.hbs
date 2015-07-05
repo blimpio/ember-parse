@@ -46,6 +46,7 @@
           <th>Category</th>
           <th>Friends</th>
           <th>Cars</th>
+          <th>Date Created</th>
           <th>Actions</th>
         </tr>
         <tbody class="table-striped">
@@ -63,6 +64,9 @@
                 {{#each thing.cars as |car|}}
                   {{car.name}} <a href="#" {{action 'updateCar' car}} class="btn btn-default btn-xs">Update</a><br>
                 {{/each}}
+              </td>
+              <td>
+                {{thing.createdAt}}
               </td>
               <td>
                 <a href="#" {{action "deleteObject" thing}} class="btn btn-default">Delete</a>
