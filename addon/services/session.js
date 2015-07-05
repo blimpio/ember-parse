@@ -82,8 +82,7 @@ export default Ember.Service.extend({
 
   invalidate() {
     if (this.get('isAuthenticated')) {
-      var key = this.get('sessionStoreKey'),
-          store = this.container.lookup('service:store'),
+      var store = this.container.lookup('service:store'),
           adapter = store.adapterFor('application');
 
       // Call logout on Parse
