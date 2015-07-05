@@ -32,10 +32,10 @@ module.exports = function(environment) {
   ENV.contentSecurityPolicy = {
     'default-src': "'none'",
     'script-src': "'self'",
-    'font-src': "'self'",
+    'font-src': "'self' https://cdnjs.cloudflare.com",
     'connect-src': "'self' https://api.parse.com",
     'img-src': "'self'",
-    'style-src': "'self' 'unsafe-inline'",
+    'style-src': "'self' 'unsafe-inline' https://cdnjs.cloudflare.com",
     'media-src': "'self'"
   };
 
