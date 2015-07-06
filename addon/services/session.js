@@ -4,7 +4,12 @@ export default Ember.Service.extend({
   user: null,
   userId: null,
   sessionToken: null,
-  sessionStoreKey: 'ember-parse:session',
+  sessionStoreKey: Ember.computed(function() {
+    var store = this.container.lookup('service:store'),
+        adapter = store.adapterFor('application');
+
+    return `ember-parse/${adapter.get('applicationId')}/session`;
+  }),
 
   init() {
     Ember.Logger.debug('DEBUG: Parse session service: init()');
