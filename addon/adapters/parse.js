@@ -40,18 +40,31 @@ export default DS.RESTAdapter.extend({
     /*
      * Parse._getInstallationId
      */
-    var hexOctet = function() {
-      return (
-        Math.floor((1+Math.random())*0x10000).toString(16).substring(1)
-      );
-    };
+    let lsKey = `ember-parse/${this.get('applicationId')}/installationId`;
 
-    return (
-      hexOctet() + hexOctet() + "-" +
-      hexOctet() + "-" +
-      hexOctet() + "-" +
-      hexOctet() + "-" +
-      hexOctet() + hexOctet() + hexOctet());
+    if (this.get('installationId')) {
+      return this.get('installationId');
+
+    } else if (localStorage.getItem(lsKey)) {
+      return localStorage.getItem(lsKey);
+
+    } else {
+      let hexOctet = function() {
+        return (
+          Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
+        );
+      };
+
+      let installationId = (
+        hexOctet() + hexOctet() + "-" +
+        hexOctet() + "-" +
+        hexOctet() + "-" +
+        hexOctet() + "-" +
+        hexOctet() + hexOctet() + hexOctet());
+
+      localStorage.setItem(lsKey, installationId);
+      return installationId;
+    }
   },
 
   ajaxOptions(url, type, options) {
