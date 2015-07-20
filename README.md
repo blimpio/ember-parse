@@ -1,3 +1,5 @@
+# DEPRECATED: Work on this has moved to [ember-parse-adapter](https://github.com/clintjhill/ember-parse-adapter/).
+
 # Parse for Ember.js
 
 This addon has all you need to use [Parse](https://parse.com/) in your Ember.js application. It includes an adapter and serializer to integrate with ember-data and a session service to provide authentication.
