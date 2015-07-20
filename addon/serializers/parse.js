@@ -139,6 +139,33 @@ export default DS.RESTSerializer.extend({
     }
   },
 
+  //In order to send the following ACL through REST API
+  // {
+  //   "8TOXdXf3tz": {
+  //     "read": true
+  //     "write": true
+  //   },
+  //   "role:Whole_Company": {
+  //     "write": true
+  //   },
+  //   "*": {
+  //     "read": true
+  //   }
+  // }
+  // please define theObject.ParseACL.raw = [
+  //   {
+  //     "id" : "8TOXdXf3tz",
+  //     "permission" : {"read": true, "write": true}
+  //   },
+  //   {
+  //     "id" : "role:Whole_Company",
+  //     "permission" : {"write": true}
+  //   },
+  //   {
+  //     "id" : "*",
+  //     "permission" : {"read": true}
+  //   }
+  // ]
   serializeIntoHash(hash, type, snapshot, options) {
     var ParseACL = snapshot.record.get('ParseACL');
 
@@ -148,16 +175,22 @@ export default DS.RESTSerializer.extend({
 
       if (ParseACL.owner) {
         policy[ParseACL.owner] = {};
+        if (ParseACL.permissions) {
+          policy[ParseACL.owner] = ParseACL.permissions;
+        } else {
+          policy[ParseACL.owner] = {
+            read: true,
+            write: true
+          };
+        }
       }
 
-      if (ParseACL.permissions) {
-        policy[ParseACL.owner] = ParseACL.permissions;
-      } else {
-        policy[ParseACL.owner] = {
-          read: true,
-          write: true
-        };
+      if (ParseACL.raw){
+        ParseACL.raw.forEach(function(item) {
+          policy[item.id] = item.permission;
+        });
       }
+
       hash.ACL = policy;
     }
 

@@ -40,6 +40,24 @@ export default Ember.Controller.extend({
         thingObj.ParseACL = {
           owner: this.get('session.userId')
         };
+
+        //Or try this
+        // thingObj.ParseACL = {
+        //   raw : [
+        //     {
+        //       "id" : this.get('session.userId'),
+        //       "permission" : {"read": true, "write": true}
+        //     },
+        //     {
+        //       "id" : "role:NameOfTheRole",
+        //       "permission" : {"write": true}
+        //     },
+        //     {
+        //       "id" : "*",
+        //       "permission" : {"read": true}
+        //     }
+        //   ]
+        // };
       }
 
       var thing = this.store.createRecord('thing', thingObj);
