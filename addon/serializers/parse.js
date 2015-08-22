@@ -221,7 +221,7 @@ export default DS.RESTSerializer.extend({
         payloadKey = this.keyForRelationship(key, "hasMany");
       }
 
-      var relationshipType = snapshot.type.determineRelationshipType(relationship);
+      var relationshipType = snapshot.type.determineRelationshipType(relationship, this.store);
 
       if (relationshipType === 'manyToNone' || relationshipType === 'manyToMany' || relationshipType === 'manyToOne') {
         var objects = [],
@@ -236,7 +236,7 @@ export default DS.RESTSerializer.extend({
 
           objects.push({
             __type: 'Pointer',
-            className: this.parseClassName(snapshot.type.typeForRelationship(key).modelName),
+            className: this.parseClassName(snapshot.type.typeForRelationship(key, this.store).modelName),
             objectId: objectsBeforeUpdate.list[0].id
           });
         }
