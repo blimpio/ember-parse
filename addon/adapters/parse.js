@@ -152,7 +152,12 @@ export default DS.RESTAdapter.extend({
   },
 
   parseClassName(key) {
-    return Ember.String.capitalize(key);
+    // 'one-name' => 'OneName'
+    return key.split('-')
+    .map(function(s){
+      return Ember.String.capitalize(s);
+    })
+    .join('');
   },
 
   /**
