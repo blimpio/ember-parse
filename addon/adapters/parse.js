@@ -105,7 +105,7 @@ export default DS.RESTAdapter.extend({
   },
 
   ajaxError(jqXHR, responseText, errorThrown) {
-    if (jqXHR && jqXHR.responseJSON.error === 'invalid session token') {
+    if (jqXHR.responseJSON && jqXHR.responseJSON.error === 'invalid session token') {
       // invalid session
       var session = this.container.lookup('service:session');
       session.resetSession();
