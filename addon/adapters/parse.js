@@ -14,9 +14,9 @@ var get = Ember.get,
 export default DS.RESTAdapter.extend({
   PARSE_APPLICATION_ID: null,
   PARSE_JAVASCRIPT_KEY: null,
+  PARSE_HOST: null,
+  PARSE_NAMESPACE: null,
 
-  host: 'https://api.parse.com',
-  namespace: '1',
   classesPath: 'classes',
   parseClientVersion: 'js1.4.2',
 
@@ -25,6 +25,8 @@ export default DS.RESTAdapter.extend({
 
     this.set('applicationId', this.get('PARSE_APPLICATION_ID'));
     this.set('javascriptKey', this.get('PARSE_JAVASCRIPT_KEY'));
+    this.set('host', this.get('PARSE_HOST') || 'https://api.parse.com');
+    this.set('namespace', this.get('PARSE_NAMESPACE') || '1');
     this.set('installationId', this._getInstallationId());
     this.set('sessionToken', null);
     this.set('userId', null);
