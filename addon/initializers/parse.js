@@ -8,7 +8,7 @@ export function initialize(container) {
 }
 
 export default {
-  before: 'store',
+  before: 'ember-data',
   name: 'parse',
   initialize: initialize
 };
